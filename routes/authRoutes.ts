@@ -1,8 +1,15 @@
-import express, {Response,Request} from 'express'
-const router : any = express.Router()
+import express from "express";
+import authCtrl from "../controllers/authCtrl";
+import validRegister from "../middleware/valid";
+const router: any = express.Router();
+
+router.post("/register", validRegister, authCtrl.register);
+router.post("/active", authCtrl.activeAccount);
+router.post("/login", authCtrl.login);
+router.get("/users", authCtrl.getUsers);
+router.get("refresh_token", authCtrl.refreshToken);
+router.get("logout", authCtrl.logout);
+router.put("user/edit/:id", authCtrl.updateUser);
+router.delete("user/delete/:id", authCtrl.deleteUser);
+
 export default router;
-
-
-router.post('/register', (req: Request, res: Response) => {
-    res.send("blabla")
-})
