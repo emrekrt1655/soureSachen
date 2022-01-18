@@ -30,11 +30,11 @@ const authCtrl = {
 
     const password = await bcrypt.hash(req.body.password, 12);
 
-    const { id, userName, email } = req.body;
+    const { userId, userName, email } = req.body;
 
     try {
       const user: IUser = {
-        id: id,
+        userId: userId,
         userName: userName,
         email: email,
         password: password,
@@ -67,7 +67,7 @@ const authCtrl = {
 
       await prisma.user.create({
         data: {
-          id: user.id,
+          userId: user.userId,
           userName: user.userName,
           email: user.email,
           password: user.password,
@@ -111,18 +111,18 @@ const authCtrl = {
       const decoded = <IDecodedToken>(
         jwt.verify(rf_token, `${tokenEnv.refresh}`)
       );
-      if (!decoded.tokenId)
+      if (!decoded.id)
         return res.status(400).json({ mesage: "Please Login now!" });
 
       const user = await prisma.user.findUnique({
-        where: { id: decoded.tokenId },
+        where: { userId: decoded.id },
         //TODO
         //select: {password: false}
       });
       if (!user)
         return res.status(404).json({ mesage: "This account does not exist." });
 
-      const access_token = genAccessToken({ id: user.id });
+      const access_token = genAccessToken({ id: user.userId });
 
       res.json({ access_token });
     } catch (error: any) {
@@ -133,8 +133,8 @@ const authCtrl = {
     try {
       const { token }: any = req.headers;
       const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
-      const { tokenId } = decoded;
-      if (!tokenId) return res.status(400).json({ message: "Invalid Token" });
+      const { id } = decoded;
+      if (!id) return res.status(400).json({ message: "Invalid Token" });
       const users: IUser[] = await prisma.user.findMany();
       return res.json({
         status: "success",
@@ -149,20 +149,21 @@ const authCtrl = {
     try {
       const { token }: any = req.headers;
       const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
-      const { tokenId, user } = decoded;
-      if (!tokenId) return res.status(400).json({ message: "Invalid Token" });
-      if (user?.id !== req.params.id)
+      const { id, user } = decoded;
+      if (!id) return res.status(400).json({ message: "Invalid Token" });
+      // if (user?.userId !== req.params.userId)
+      if (id !== req.params.userId)
         return res
           .status(400)
           .json({ message: "You are not authorized to update this" });
-      const { id, userName, email, password } = <IUser>req.body;
+      const { userId, userName, email, password } = <IUser>req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
       const updatedUser: IUser = await prisma.user.update({
-        where: { id: req.params.id },
+        where: { userId: req.params.userId },
         data: <IUser>{
-          id,
-          userName,
-          email,
+          userId: userId,
+          userName: userName,
+          email: email,
           password: hashedPassword,
         },
       });
@@ -180,20 +181,20 @@ const authCtrl = {
       const { token }: any = req.headers;
       const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
 
-      const { tokenId, user } = decoded;
-      if (!tokenId) return res.status(400).json({ message: "Invalid Token" });
+      const { id, user } = decoded;
+      if (!id) return res.status(400).json({ message: "Invalid Token" });
 
-      if (user?.id !== req.params.id)
+      if (id !== req.params.userId)
         return res
           .status(400)
           .json({ message: "You are not authorized to delete this" });
       const deletedUser = await prisma.user.delete({
-        where: { id: req.params.id },
+        where: { userId: req.params.userId },
       });
 
       return res
         .status(200)
-        .send({ message: `${deletedUser.id} deleted successfully` });
+        .send({ message: `${deletedUser.userId} deleted successfully` });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
@@ -206,9 +207,9 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
     return res.status(400).json({ message: "Password is incorrect" });
 
   //after login creates a access token
-  const access_token = genAccessToken({ id: user.id });
+  const access_token = genAccessToken({ id: user.userId });
   // it creates a new access token
-  const refresh_token = genRefreshToken({ id: user.id });
+  const refresh_token = genRefreshToken({ id: user.userId });
 
   res.cookie("refreshtoken", refresh_token, {
     httpOnly: true,

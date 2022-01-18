@@ -7,9 +7,9 @@ router.post("/register", validRegister, authCtrl.register);
 router.post("/active", authCtrl.activeAccount);
 router.post("/login", authCtrl.login);
 router.get("/users", authCtrl.getUsers);
-router.get("refresh_token", authCtrl.refreshToken);
-router.get("logout", authCtrl.logout);
-router.put("user/edit/:id", authCtrl.updateUser);
-router.delete("user/delete/:id", authCtrl.deleteUser);
+router.get("/refresh_token", authCtrl.refreshToken);
+router.get("/logout", authCtrl.logout);
+router.put("/useredit/:userId", authCtrl.updateUser);
+router.delete("/userdelete/:userId", authCtrl.deleteUser);
 
 export default router;

@@ -1,5 +1,5 @@
 export interface IUser {
-    id: string;
+    userId: string;
     userName: string;
     email: string;
     password: string;
@@ -7,7 +7,7 @@ export interface IUser {
   }
 
   export interface IDecodedToken {
-    tokenId?: string,
+    id?: string,
     user?: IUser; 
     iat: number,
     exp: number
