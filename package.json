@@ -6,7 +6,9 @@
   "scripts": {
     "start": "ts-node-dev index.ts"
   },
-  "keywords": ["heroku"],
+  "keywords": [
+    "heroku"
+  ],
   "author": "Emre Kurt",
   "license": "ISC",
   "devDependencies": {
