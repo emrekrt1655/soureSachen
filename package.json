@@ -6,8 +6,8 @@
   "scripts": {
     "start": "ts-node-dev index.ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["heroku"],
+  "author": "Emre Kurt",
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
