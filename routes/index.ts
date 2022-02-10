@@ -1,7 +1,9 @@
+import postRoutes from "./postRoutes"
 import authRoutes from "./authRoutes"
 
 const routes = {
-    authRoutes
+    authRoutes,
+    postRoutes
 }
 
 

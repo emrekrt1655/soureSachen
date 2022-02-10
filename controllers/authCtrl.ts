@@ -30,11 +30,11 @@ const authCtrl = {
 
     const password = await bcrypt.hash(req.body.password, 12);
 
-    const { userId, userName, email } = req.body;
+    const {  userName, email } = req.body;
 
     try {
       const user: IUser = {
-        userId: userId,
+        userId: `${userName + new Date()}`,
         userName: userName,
         email: email,
         password: password,
@@ -196,7 +196,7 @@ const authCtrl = {
         .status(200)
         .send({ message: `${deletedUser.userId} deleted successfully` });
     } catch (error: any) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ message: error.message });
     }
   },
 };

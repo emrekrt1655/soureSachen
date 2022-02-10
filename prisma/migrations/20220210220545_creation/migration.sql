@@ -23,6 +23,7 @@ CREATE TABLE "Post" (
     "text" TEXT NOT NULL,
     "postUserId" TEXT NOT NULL,
     "postTopicId" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3)
 );

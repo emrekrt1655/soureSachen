@@ -12,3 +12,12 @@ export interface IUser {
     iat: number,
     exp: number
   }
+
+
+  export interface IPost {
+    postId: string;
+    text: string;
+    postUserId: string;
+    postTopicId: string;
+    image?: string;
+  }
