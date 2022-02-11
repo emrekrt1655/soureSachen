@@ -20,3 +20,10 @@ export interface IUser {
     postUserId: string;
     postTopicId: string;
   }
+
+  export interface IComment {
+    commentId: string;
+    text: string;
+    commentPostId: string;
+    commentUserId: string;
+  }
