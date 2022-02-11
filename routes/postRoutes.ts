@@ -6,7 +6,7 @@ const router: any = express.Router();
 router.post("/postCreate", postCtrl.create)
 router.get("/posts", postCtrl.getPosts)
 router.get("/posts/:userId", postCtrl.getPostsbyUserId)
-router.delete("/post/:/postId", postCtrl.delete)
+router.delete("/postDelete/:postId", postCtrl.delete)
 
 
 export default router
