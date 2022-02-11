@@ -19,5 +19,4 @@ export interface IUser {
     text: string;
     postUserId: string;
     postTopicId: string;
-    image?: string;
   }

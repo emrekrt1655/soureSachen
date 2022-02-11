@@ -43,6 +43,10 @@ const postCtrl = {
 
   create: async (req: Request, res: Response) => {
     try {
+      const { token }: any = req.headers;
+      const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
+      const { id } = decoded;
+      if (!id) return res.status(400).json({ message: "Invalid Token Please Login" });
       const { text, topic, userId } = req.body;
       prisma.post.create({
         data: {
