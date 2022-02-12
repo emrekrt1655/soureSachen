@@ -33,3 +33,15 @@ export interface ILike {
   likeCommentId?: string;
   likeUserId: string;
 }
+
+export interface IFollower {
+  folId: string;
+  followerId: string;
+  followedId: string;
+}
+
+export interface IFollowing {
+  followingId: string;
+  followerId: string;
+  followedId: string;
+}

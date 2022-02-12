@@ -11,17 +11,18 @@ datasource db {
 }
 
 model User {
-  userId    String     @unique
-  userName  String     @unique
-  email     String     @unique
-  password  String
-  avatar    String     @default("https://www.faydavipegitim.com/media/contents/0ed09-user-profile.jpeg")
-  createdAt DateTime?  @default(now())
-  updatedAt DateTime?  @updatedAt
-  posts     Post[]
-  comments  Comment[]
-  likes     Like[]
-  folowers  Follower[]
+  userId     String      @unique
+  userName   String      @unique
+  email      String      @unique
+  password   String
+  avatar     String      @default("https://www.faydavipegitim.com/media/contents/0ed09-user-profile.jpeg")
+  createdAt  DateTime?   @default(now())
+  updatedAt  DateTime?   @updatedAt
+  posts      Post[]
+  comments   Comment[]
+  likes      Like[]
+  followers  Follower[]
+  followings Following[]
 
 }
 
@@ -79,4 +80,13 @@ model Follower {
   followedId String
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
+}
+
+model Following {
+  followingId String    @unique
+  followerId  String
+  following   User      @relation(fields: [followerId], references: [userId])
+  followedId  String
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
 }
