@@ -7,13 +7,13 @@ const validRegister = async (
 ) => {
   const { userId, userName, email, password } = req.body;
 
-  if (!userId) {
-    return res.status(400).json({ msg: "Please add your User ID." });
-  } else if (userId.length > 5) {
-    return res.status(400).json({ msg: "Your User ID must be 5 digits." });
-  } else if (userId.length < 5) {
-    return res.status(400).json({ msg: "Your User ID must be 5 digits." });
-  }
+  // if (!userId) {
+  //   return res.status(400).json({ msg: "Please add your User ID." });
+  // } else if (userId.length > 5) {
+  //   return res.status(400).json({ msg: "Your User ID must be 5 digits." });
+  // } else if (userId.length < 5) {
+  //   return res.status(400).json({ msg: "Your User ID must be 5 digits." });
+  // }
 
   if (!userName) {
     return res.status(400).json({ msg: "Please add your user name" });

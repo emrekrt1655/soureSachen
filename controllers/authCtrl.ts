@@ -34,7 +34,7 @@ const authCtrl = {
 
     try {
       const user: IUser = {
-        userId: `${userName + new Date()}`,
+        userId: `${userName + new Date().getMilliseconds()*5}`,
         userName: userName,
         email: email,
         password: password,
@@ -44,7 +44,7 @@ const authCtrl = {
       const activeToken = genActiveToken({ user });
       res.json({
         status: "OK",
-        msg: "Please active your account",
+        message: "Please active your account",
         data: user,
         activeToken,
       });
@@ -124,7 +124,7 @@ const authCtrl = {
 
       const access_token = genAccessToken({ id: user.userId });
 
-      res.json({ access_token });
+      res.status(200).json({ access_token });
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
