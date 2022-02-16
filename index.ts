@@ -16,6 +16,7 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 
 app.use("/api", routes.authRoutes)
+app.use("/api", routes.topicRoutes)
 
 
 app.listen(PORT, () => {

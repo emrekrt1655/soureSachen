@@ -45,3 +45,8 @@ export interface IFollowing {
   followerId: string;
   followedId: string;
 }
+
+export interface ITopic {
+  topicId: string;
+  text: string;
+}
