@@ -1,3 +1,13 @@
+export interface IPostData {
+  text: string;
+  postUserId: string;
+  topic: string;
+}
+
+export interface ITopicData {
+  text: string;
+}
+
 export interface ILoginData {
   email: string;
   password: string;
@@ -8,6 +18,7 @@ export interface IRegisterData {
   email: string;
   password: string;
 }
+
 
 export interface IUserData extends IRegisterData {
   userId: string;
@@ -40,6 +51,14 @@ interface IUsersBody {
   status: string;
   message: string;
   data: IUserData[];
+}
+interface ITopicBody {
+  status: string;
+  message: string;
+  data: ITopicData[];
+}
+export interface IResponseTopic {
+  body: ITopicBody;
 }
 
 export interface IResponseRegister {
