@@ -5,20 +5,20 @@ import logger from "morgan";
 import routes from "./routes/index";
 import bodyParser from "body-parser";
 
-const app = express()
+const app = express();
 
 const PORT = process.env.PORT || 8000;
 
-app.use(express.urlencoded({extended: false}))
-app.use(cors())
-app.use(logger("dev"))
-app.use(cookieParser())
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+app.use(logger("dev"));
+app.use(cookieParser());
+app.use(bodyParser.json());
 
-app.use("/api", routes.authRoutes)
-app.use("/api", routes.topicRoutes)
-
+app.use("/api", routes.authRoutes);
+app.use("/api", routes.topicRoutes);
+app.use("/api", routes.postRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Server at listening on port ${PORT}`)
-})
+  console.log(`Server at listening on port ${PORT}`);
+});

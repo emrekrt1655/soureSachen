@@ -1,7 +1,8 @@
 export interface IPostData {
+  postId?: string;
   text: string;
   postUserId: string;
-  topic: string;
+  postTopicId: string;
 }
 
 export interface ITopicData {
@@ -18,7 +19,6 @@ export interface IRegisterData {
   email: string;
   password: string;
 }
-
 
 export interface IUserData extends IRegisterData {
   userId: string;
@@ -57,19 +57,28 @@ interface ITopicBody {
   message: string;
   data: ITopicData[];
 }
+
+interface IPostBody {
+  status: string;
+  message: string;
+  data: IPostData[];
+}
 export interface IResponseTopic {
   body: ITopicBody;
+}
+export interface IResponsePost {
+  body: IPostBody;
 }
 
 export interface IResponseRegister {
   body: IResponseBody;
 }
 export interface IActiveResponse {
-  body: IResponseActiveBody
+  body: IResponseActiveBody;
 }
 
 export interface IResponseUpdatedUser {
-  body: IResponseUpdatedUser
+  body: IResponseUpdatedUser;
 }
 
 export interface IResponseLogin {

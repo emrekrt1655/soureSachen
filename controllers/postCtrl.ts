@@ -3,8 +3,6 @@ import { Request, Response } from "express";
 import { IPost, IDecodedToken } from "../utils/types";
 import jwt from "jsonwebtoken";
 
-
-
 const tokenEnv = {
   access: process.env.ACCESS_TOKEN_SECRET,
 };
@@ -46,15 +44,15 @@ const postCtrl = {
       const { token }: any = req.headers;
       const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
       const { id } = decoded;
-      if (!id) return res.status(400).json({ message: "Invalid Token Please Login" });
-      const { text, topic, userId } = req.body;
-      prisma.post.create({
+      if (!id)
+        return res.status(400).json({ message: "Invalid Token Please Login" });
+      const { text, postTopicId, userId } = req.body;
+      await prisma.post.create({
         data: {
-          postId: `${text.slice(0, 20) + new Date()}`,
+          postId: `${text.slice(0, 20).replace(/\s+/g, '') + new Date().getMilliseconds() * 3}`,
           text: text,
           postUserId: userId,
-          topic: topic,
-          postTopicId: `${new Date() + topic}`,
+          postTopicId: postTopicId,
         },
       });
       res.status(200).json({ message: "Post has been created" });
