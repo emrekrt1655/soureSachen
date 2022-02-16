@@ -33,7 +33,7 @@ const topicCtrl = {
       const { text } = req.body;
       await prisma.topic.create({
         data: {
-          topicId: `${text.slice(0, 20) + new Date().getMilliseconds()*6}`,
+          topicId: `${text.slice(0, 20).replace(/\s+/g, '') + new Date().getMilliseconds()*6}`,
           text: text,
         },
       });
