@@ -35,8 +35,9 @@ const followerCtrl = {
       const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
       const { id } = decoded;
       if (!id) return res.status(400).json({ message: "Please Login to see" });
+        const {followerId} = req.params
       const followings: IFollowing[] = await prisma.following.findMany({
-        where: { followerId: req.params.followerId },
+        where: { followerId: followerId },
       });
       return res.status(200).json({
         status: "success",
@@ -57,9 +58,9 @@ const followerCtrl = {
         return res.status(400).json({ message: "Please Login to follow" });
 
       const { followerId, followedId } = req.body;
-      prisma.follower.create({
+      await prisma.follower.create({
         data: {
-          folId: `${followerId + new Date()}`,
+          folId: `${followerId + new Date().getMilliseconds()*7}`,
           followedId: followedId,
           followerId: followerId,
         },
@@ -78,9 +79,9 @@ const followerCtrl = {
         return res.status(400).json({ message: "Please Login to follow" });
 
       const { followerId, followedId } = req.body;
-      prisma.following.create({
+      await prisma.following.create({
         data: {
-          followingId: `${followedId + new Date()}`,
+          followingId: `${followedId + new Date().getMilliseconds()*4}`,
           followedId: followedId,
           followerId: followerId,
         },

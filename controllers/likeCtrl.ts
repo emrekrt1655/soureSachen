@@ -17,8 +17,9 @@ const likeCtrl = {
       const { id } = decoded;
       if (!id)
         return res.status(400).json({ message: "Please Login to comment" });
+      const {postId} = req.params
       const likes: any = await prisma.like.findMany({
-        where: { likePostId: req.params.postId },
+        where: { likePostId: postId },
       });
       return res.status(200).json({
         status: "success",
@@ -36,8 +37,9 @@ const likeCtrl = {
       const { id } = decoded;
       if (!id)
         return res.status(400).json({ message: "Please Login to comment" });
+        const {commentId} = req.params 
       const likes: any = await prisma.like.findMany({
-        where: { likeCommentId: req.params.commentId },
+        where: { likeCommentId: commentId },
       });
       return res.status(200).json({
         status: "success",
@@ -56,10 +58,32 @@ const likeCtrl = {
     if (!id)
       return res.status(400).json({ message: "Please Login to comment" });
     
-    const {likeId, likeUserId} = req.body;
-    prisma.like.create({
+    const {likeId, likeUserId, likePostId} = req.body;
+    await prisma.like.create({
         data: { 
-            likeId: `${likeUserId + new Date()}`,
+            likeId: `${likeUserId + new Date().getMilliseconds()*11}`,
+            likePostId: likePostId,
+            likeUserId: likeUserId
+        }
+    })
+    res.status(200).json({ message: "It has been liked" });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  },
+  likeComment: async (req: Request, res: Response) => {
+    try{
+    const { token }: any = req.headers;
+    const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
+    const { id } = decoded;
+    if (!id)
+      return res.status(400).json({ message: "Please Login to comment" });
+    
+    const { likeUserId, likeCommentId} = req.body;
+    await prisma.like.create({
+        data: { 
+            likeId: `${likeUserId + new Date().getMilliseconds()*11}`,
+            likeCommentId: likeCommentId,
             likeUserId: likeUserId
         }
     })

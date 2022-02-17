@@ -18,6 +18,9 @@ app.use(bodyParser.json());
 app.use("/api", routes.authRoutes);
 app.use("/api", routes.topicRoutes);
 app.use("/api", routes.postRoutes);
+app.use("/api", routes.commentRoutes);
+app.use('/api', routes.likeRoutes);
+app.use('/api', routes.followerRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server at listening on port ${PORT}`);

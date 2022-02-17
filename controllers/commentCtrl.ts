@@ -30,13 +30,13 @@ const commentCtrl = {
       const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
       const { id } = decoded;
       if (!id) return res.status(400).json({ message: "Please Login to comment" });
-      const { text, postId, userId } = req.body;
-      prisma.comment.create({
+      const { text, commentPostId, commentUserId } = req.body;
+      await prisma.comment.create({
         data: {
-          commentId: `${text.slice(0, 20) + new Date()}`,
+          commentId: `${text.slice(0, 20).replace(/\s+/g, '') + new Date().getMilliseconds()*5}`,
           text: text,
-          commentPostId: postId,
-          commentUserId: userId,
+          commentPostId: commentPostId,
+          commentUserId: commentUserId,
         },
       });
       res.status(200).json({ message: "Comment has been created" });

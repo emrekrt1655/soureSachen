@@ -4,7 +4,7 @@ const router: any = express.Router();
 
 
 router.post("/commentCreate", commentCtrl.createComment)
-router.get("/comments", commentCtrl.getComments)
+router.get("/comments/:postId", commentCtrl.getComments)
 router.delete("/commentDelete/:commentId", commentCtrl.delete)
 
 
