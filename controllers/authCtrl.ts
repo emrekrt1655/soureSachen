@@ -8,6 +8,8 @@ import {
   genAccessToken,
   genRefreshToken,
 } from "../config/genToken";
+import sendMail from "../config/sendMail";
+import { validateEmail } from "../middleware/valid";
 
 const prisma = new PrismaClient();
 
@@ -16,7 +18,7 @@ const tokenEnv = {
   refresh: process.env.REFRESH_TOKEN_SECRET,
   access: process.env.ACCESS_TOKEN_SECRET,
 };
-
+const CLIENT_URL = `${process.env.BASE_URL}`;
 const authCtrl = {
   // register handler don't save to the database,
   //  it creates only a user data to generate a activation token
@@ -30,11 +32,11 @@ const authCtrl = {
 
     const password = await bcrypt.hash(req.body.password, 12);
 
-    const {  userName, email } = req.body;
+    const { userName, email } = req.body;
 
     try {
       const user: IUser = {
-        userId: `${userName + new Date().getMilliseconds()*5}`,
+        userId: `${userName + new Date().getMilliseconds() * 5}`,
         userName: userName,
         email: email,
         password: password,
@@ -42,12 +44,13 @@ const authCtrl = {
 
       //it generates a token for five minutes to activate account
       const activeToken = genActiveToken({ user });
-      res.json({
-        status: "OK",
-        message: "Please active your account",
-        data: user,
-        activeToken,
-      });
+      const url = `${CLIENT_URL}/active/${activeToken}`;
+      if (validateEmail(email)) {
+        sendMail(email, url, "Verify your email address!");
+        return res.json({
+          message: "Succsess! Please check your email address!",
+        });
+      }
     } catch (error: any) {
       res.status(500).json(error.message);
     }
