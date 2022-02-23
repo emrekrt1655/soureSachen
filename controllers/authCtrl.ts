@@ -66,7 +66,7 @@ const authCtrl = {
       );
       const { user } = decoded;
 
-      if (!user) return res.status(400).json({ msg: "Invalid token" });
+      if (!user) return res.status(400).json({ message: "Invalid token" });
 
       await prisma.user.create({
         data: {
@@ -88,13 +88,13 @@ const authCtrl = {
 
       const user = await prisma.user.findUnique({ where: { email: email } });
       if (!user)
-        return res.status(400).json({ msg: "This account does not exists" });
+        return res.status(400).json({ message: "This account does not exists" });
 
       // if the user exists
 
       loginUser(user, password, res);
     } catch (error: any) {
-      return res.status(500).json({ msg: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
   logout: async (req: Request, res: Response) => {
