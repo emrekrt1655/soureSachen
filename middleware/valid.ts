@@ -16,19 +16,19 @@ const validRegister = async (
   // }
 
   if (!userName) {
-    return res.status(400).json({ msg: "Please add your user name" });
+    return res.status(400).json({ message: "Please add your user name" });
   } else if (userName.length > 20) {
-    return res.status(400).json({ msg: "Your surname is up to 20 chars long" });
+    return res.status(400).json({ message: "Your surname is up to 20 chars long" });
   }
 
   if (!email) {
-    return res.status(400).json({ msg: "Please add your email address" });
+    return res.status(400).json({ message: "Please add your email address" });
   } else if (!validateEmail(email)) {
-    return res.status(400).json({ msg: "Your email is not valid" });
+    return res.status(400).json({ message: "Your email is not valid" });
   }
 
   if (password.length < 8) {
-    return res.json({ msg: "Password must be at least 8 chars." });
+    return res.json({ message: "Password must be at least 8 chars." });
   }
 
   next();
