@@ -127,7 +127,7 @@ const authCtrl = {
 
       const access_token = genAccessToken({ id: user.userId });
 
-      res.status(200).json({ access_token });
+      res.status(200).json({ access_token, user });
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
@@ -159,11 +159,12 @@ const authCtrl = {
         return res
           .status(400)
           .json({ message: "You are not authorized to update this" });
-      const { userId, userName, email, password } = <IUser>req.body;
+      const { userId, userName, email, password, avatar } = <IUser>req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
       const updatedUser: IUser = await prisma.user.update({
         where: { userId: req.params.userId },
         data: <IUser>{
+          avatar:avatar,
           userId: userId,
           userName: userName,
           email: email,

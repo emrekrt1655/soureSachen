@@ -37,9 +37,9 @@ model Topic {
 model Post {
   postId      String    @unique
   text        String
-  user        User      @relation(fields: [postUserId], references: [userId])
+  user        User      @relation(fields: [postUserId], references: [userId], onDelete: Cascade)
   postUserId  String
-  topic       Topic     @relation(fields: [postTopicId], references: [topicId])
+  topic       Topic     @relation(fields: [postTopicId], references: [topicId], onDelete: Cascade)
   postTopicId String
   image       String?
   createdAt   DateTime? @default(now())
@@ -50,10 +50,10 @@ model Post {
 
 model Comment {
   commentId     String    @unique
-  post          Post      @relation(fields: [commentPostId], references: [postId])
+  post          Post      @relation(fields: [commentPostId], references: [postId], onDelete: Cascade)
   text          String
   commentPostId String
-  user          User      @relation(fields: [commentUserId], references: [userId])
+  user          User      @relation(fields: [commentUserId], references: [userId], onDelete: Cascade)
   commentUserId String
   likes         Like[]
   createdAt     DateTime? @default(now())
@@ -63,11 +63,11 @@ model Comment {
 
 model Like {
   likeId        String    @unique
-  post          Post?     @relation(fields: [likePostId], references: [postId])
+  post          Post?     @relation(fields: [likePostId], references: [postId], onDelete: Cascade)
   likePostId    String?
-  comment       Comment?  @relation(fields: [likeCommentId], references: [commentId])
+  comment       Comment?  @relation(fields: [likeCommentId], references: [commentId], onDelete: Cascade)
   likeCommentId String?
-  user          User      @relation(fields: [likeUserId], references: [userId])
+  user          User      @relation(fields: [likeUserId], references: [userId], onDelete: Cascade)
   likeUserId    String
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @updatedAt
@@ -76,7 +76,7 @@ model Like {
 model Follower {
   folId      String    @unique
   followerId String
-  follower   User      @relation(fields: [followedId], references: [userId])
+  follower   User      @relation(fields: [followedId], references: [userId], onDelete: Cascade)
   followedId String
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
@@ -85,7 +85,7 @@ model Follower {
 model Following {
   followingId String    @unique
   followerId  String
-  following   User      @relation(fields: [followerId], references: [userId])
+  following   User      @relation(fields: [followerId], references: [userId], onDelete: Cascade)
   followedId  String
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
