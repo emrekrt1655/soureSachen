@@ -49,6 +49,7 @@ const authCtrl = {
         sendMail(email, url, "Verify your email address!");
         return res.json({
           message: "Succsess! Please check your email address!",
+          active_token: activeToken,
         });
       }
     } catch (error: any) {
@@ -88,7 +89,9 @@ const authCtrl = {
 
       const user = await prisma.user.findUnique({ where: { email: email } });
       if (!user)
-        return res.status(400).json({ message: "This account does not exists" });
+        return res
+          .status(400)
+          .json({ message: "This account does not exists" });
 
       // if the user exists
 
@@ -134,11 +137,24 @@ const authCtrl = {
   },
   getUsers: async (req: Request, res: Response) => {
     try {
-      const { token }: any = req.headers;
-      const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
-      const { id } = decoded;
-      if (!id) return res.status(400).json({ message: "Invalid Token" });
-      const users: IUser[] = await prisma.user.findMany();
+      // const { token }: any = req.headers;
+      // const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
+      // const { id } = decoded;
+      // if (!id) return res.status(400).json({ message: "Invalid Token" });
+      const users: IUser[] = await prisma.user.findMany({
+        include: {
+          _count: {
+            select: {
+              posts: true,
+              
+              likes: true,
+              followers: true,
+              comments: true,
+              followings: true,
+            },
+          },
+        },
+      });
       return res.json({
         status: "success",
         message: "All users found",
@@ -164,7 +180,7 @@ const authCtrl = {
       const updatedUser: IUser = await prisma.user.update({
         where: { userId: req.params.userId },
         data: <IUser>{
-          avatar:avatar,
+          avatar: avatar,
           userId: userId,
           userName: userName,
           email: email,

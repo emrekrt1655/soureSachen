@@ -11,27 +11,33 @@ datasource db {
 }
 
 model User {
-  userId     String      @unique
-  userName   String      @unique
-  email      String      @unique
-  password   String
-  avatar     String      @default("https://www.faydavipegitim.com/media/contents/0ed09-user-profile.jpeg")
-  createdAt  DateTime?   @default(now())
-  updatedAt  DateTime?   @updatedAt
-  posts      Post[]
-  comments   Comment[]
-  likes      Like[]
-  followers  Follower[]
-  followings Following[]
+  userId         String      @unique
+  userName       String      @unique
+  email          String      @unique
+  password       String
+  avatar         String      @default("https://www.faydavipegitim.com/media/contents/0ed09-user-profile.jpeg")
+  isTopicCreator String      @default("false")
+  isVerified     String      @default("false")
+  createdAt      DateTime?   @default(now())
+  updatedAt      DateTime?   @updatedAt
+  posts          Post[]
+  topics         Topic[]
+  comments       Comment[]
+  likes          Like[]
+  followers      Follower[]
+  followings     Following[]
 
 }
 
 model Topic {
-  topicId   String    @unique
-  text      String    @unique
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  posts     Post[]
+  topicId     String    @unique
+  text        String    @unique
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  user        User      @relation(fields: [topicUserId], references: [userId], onDelete: Cascade)
+  image       String?   @default("https://images.pexels.com/photos/1571673/pexels-photo-1571673.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
+  topicUserId String
+  posts       Post[]
 }
 
 model Post {
@@ -41,7 +47,7 @@ model Post {
   postUserId  String
   topic       Topic     @relation(fields: [postTopicId], references: [topicId], onDelete: Cascade)
   postTopicId String
-  image       String?
+  image       String?   @default("https://images.pexels.com/photos/1809342/pexels-photo-1809342.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
   comments    Comment[]

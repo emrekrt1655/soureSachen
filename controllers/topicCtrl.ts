@@ -12,7 +12,13 @@ const prisma = new PrismaClient();
 const topicCtrl = {
   getTopics: async (req: Request, res: Response) => {
     try {
-      const topics: ITopic[] = await prisma.topic.findMany();
+      const topics: ITopic[] = await prisma.topic.findMany({
+        include: {
+          _count: {
+            select: {posts: true}
+          }
+        }
+      });
       return res.status(200).json({
         status: "success",
         message: "All topics found",

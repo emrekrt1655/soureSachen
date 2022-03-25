@@ -12,7 +12,13 @@ const prisma = new PrismaClient();
 const postCtrl = {
   getPosts: async (req: Request, res: Response) => {
     try {
-      const posts: IPost[] = await prisma.post.findMany();
+      const posts: IPost[] = await prisma.post.findMany({
+        include: {
+          _count: {
+            select: {comments: true, likes: true}
+          }
+        }
+      });
       return res.status(200).json({
         status: "success",
         message: "All posts found",
