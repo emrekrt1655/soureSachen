@@ -20,6 +20,7 @@ export interface IPost {
   text: string;
   postUserId: string;
   postTopicId: string;
+  image?: String;
 }
 
 export interface IComment {
@@ -52,4 +53,6 @@ export interface ITopic {
   topicId: string;
   text: string;
   topicUserId: string;
+  image?: string;
+  country: string;
 }
