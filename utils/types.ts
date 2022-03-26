@@ -1,6 +1,8 @@
 export interface IUser {
   userId: string;
   userName: string;
+  name: string;
+  surname: string;
   email: string;
   password: string;
   avatar?: string;
@@ -49,4 +51,5 @@ export interface IFollowing {
 export interface ITopic {
   topicId: string;
   text: string;
+  topicUserId: string;
 }

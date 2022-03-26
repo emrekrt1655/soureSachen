@@ -32,12 +32,14 @@ const authCtrl = {
 
     const password = await bcrypt.hash(req.body.password, 12);
 
-    const { userName, email } = req.body;
+    const { userName, email, name, surname } = req.body;
 
     try {
       const user: IUser = {
         userId: `${userName + new Date().getMilliseconds() * 5}`,
         userName: userName,
+        name: name,
+        surname: surname,
         email: email,
         password: password,
       };
@@ -72,6 +74,8 @@ const authCtrl = {
       await prisma.user.create({
         data: {
           userId: user.userId,
+          name: user.name,
+          surname: user.surname,
           userName: user.userName,
           email: user.email,
           password: user.password,
@@ -175,7 +179,7 @@ const authCtrl = {
         return res
           .status(400)
           .json({ message: "You are not authorized to update this" });
-      const { userId, userName, email, password, avatar } = <IUser>req.body;
+      const { userId, userName, email, password, avatar, name, surname } = <IUser>req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
       const updatedUser: IUser = await prisma.user.update({
         where: { userId: req.params.userId },
@@ -183,6 +187,8 @@ const authCtrl = {
           avatar: avatar,
           userId: userId,
           userName: userName,
+          name: name,
+          surname: surname,
           email: email,
           password: hashedPassword,
         },
