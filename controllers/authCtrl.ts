@@ -146,8 +146,8 @@ const authCtrl = {
           _count: {
             select: {
               posts: true,
-              
               likes: true,
+              topics: true,
               followers: true,
               comments: true,
               followings: true,
