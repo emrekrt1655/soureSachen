@@ -36,12 +36,14 @@ const topicCtrl = {
       const { id } = decoded;
       if (!id)
         return res.status(400).json({ message: "Invalid Token Please Login" });
-      const { text, topicUserId } = req.body;
+      const { text, topicUserId, country, image } = req.body;
       await prisma.topic.create({
         data: {
           topicId: `${text.slice(0, 20).replace(/\s+/g, '') + new Date().getMilliseconds()*6}`,
           text: text,
-          topicUserId: topicUserId
+          topicUserId: topicUserId,
+          image: image,
+          country: country
         },
       });
       res.status(200).json({ message: "Topic has been created" });
