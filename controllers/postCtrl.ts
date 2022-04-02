@@ -52,12 +52,12 @@ const postCtrl = {
       const { id } = decoded;
       if (!id)
         return res.status(400).json({ message: "Invalid Token Please Login" });
-      const { text, postTopicId, userId, image } = req.body;
+      const { text, postTopicId, postUserId, image } = req.body;
       await prisma.post.create({
         data: {
           postId: `${text.slice(0, 20).replace(/\s+/g, '') + new Date().getMilliseconds() * 3}`,
           text: text,
-          postUserId: userId,
+          postUserId: postUserId,
           postTopicId: postTopicId,
           image: image
         },
