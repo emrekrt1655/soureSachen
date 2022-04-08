@@ -10,17 +10,10 @@ const tokenEnv = {
 const prisma = new PrismaClient();
 
 const likeCtrl = {
-  getPostLikes: async (req: Request, res: Response) => {
+  getLikes: async (req: Request, res: Response) => {
     try {
-      const { token }: any = req.headers;
-      const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
-      const { id } = decoded;
-      if (!id)
-        return res.status(400).json({ message: "Please Login to comment" });
-      const {postId} = req.params
-      const likes: any = await prisma.like.findMany({
-        where: { likePostId: postId },
-      });
+     
+      const likes: any = await prisma.like.findMany();
       return res.status(200).json({
         status: "success",
         message: "All likes found",

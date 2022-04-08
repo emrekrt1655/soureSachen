@@ -3,7 +3,7 @@ import likeCtrl from "../controllers/likeCtrl";
 const router: any = express.Router();
 
 
-router.get("/getPostLikes/:postId", likeCtrl.getPostLikes)
+router.get("/likes", likeCtrl.getLikes)
 router.get("/getCommentLikes/:commentId", likeCtrl.getCommentLikes)
 router.post("/like", likeCtrl.like)
 router.post("/likeComment", likeCtrl.likeComment)
