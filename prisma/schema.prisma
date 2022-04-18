@@ -15,6 +15,7 @@ model User {
   userName       String      @unique
   name           String
   surname        String
+  bio            String?
   email          String      @unique
   password       String
   avatar         String      @default("https://www.faydavipegitim.com/media/contents/0ed09-user-profile.jpeg")
@@ -27,7 +28,7 @@ model User {
   comments       Comment[]
   likes          Like[]
   followers      Follower[]
-  followings     Following[]
+  //followings     Following[]
 
 }
 
@@ -85,17 +86,17 @@ model Like {
 model Follower {
   folId      String    @unique
   followerId String
-  follower   User      @relation(fields: [followedId], references: [userId], onDelete: Cascade)
+  follower   User      @relation(fields: [followerId], references: [userId], onDelete: Cascade)
   followedId String
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
 }
 
-model Following {
-  followingId String    @unique
-  followerId  String
-  following   User      @relation(fields: [followerId], references: [userId], onDelete: Cascade)
-  followedId  String
-  createdAt   DateTime? @default(now())
-  updatedAt   DateTime? @updatedAt
-}
+// model Following {
+//   followingId String    @unique
+//   followerId  String
+//   following   User      @relation(fields: [followerId], references: [userId], onDelete: Cascade)
+//   followedId  String
+//   createdAt   DateTime? @default(now())
+//   updatedAt   DateTime? @updatedAt
+// }

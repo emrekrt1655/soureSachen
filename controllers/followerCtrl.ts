@@ -35,7 +35,7 @@ const followerCtrl = {
       const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
       const { id } = decoded;
       if (!id) return res.status(400).json({ message: "Please Login to see" });
-        const {followerId} = req.params
+      const { followerId } = req.params;
       const followings: IFollowing[] = await prisma.following.findMany({
         where: { followerId: followerId },
       });
@@ -60,7 +60,7 @@ const followerCtrl = {
       const { followerId, followedId } = req.body;
       await prisma.follower.create({
         data: {
-          folId: `${followerId + new Date().getMilliseconds()*7}`,
+          folId: `${followerId + new Date().getMilliseconds() * 7}`,
           followedId: followedId,
           followerId: followerId,
         },
@@ -81,7 +81,7 @@ const followerCtrl = {
       const { followerId, followedId } = req.body;
       await prisma.following.create({
         data: {
-          followingId: `${followedId + new Date().getMilliseconds()*4}`,
+          followingId: `${followedId + new Date().getMilliseconds() * 4}`,
           followedId: followedId,
           followerId: followerId,
         },
@@ -102,18 +102,41 @@ const followerCtrl = {
       const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
       const { id } = decoded;
       if (!id) return res.status(400).json({ message: "Invalid Token" });
-      if (id !== following!.followerId)
+      if (id !== following!.followedId)
         return res
           .status(400)
           .json({ message: "You are not authorized to unfollow this" });
       const unfollowedUser = await prisma.following.delete({
         where: { followingId: req.params.followingId },
       });
-      return res
-        .status(200)
-        .send({
-          message: `${unfollowedUser.followingId} deleted successfully`,
-        });
+      return res.status(200).send({
+        message: `${unfollowedUser.followingId} deleted successfully`,
+      });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  },
+
+  unfollow2: async (req: Request, res: Response) => {
+    try {
+      const { folId } = req.params;
+      const follower = await prisma.follower.findUnique({
+        where: { folId: folId },
+      });
+      const { token }: any = req.headers;
+      const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
+      const { id } = decoded;
+      if (!id) return res.status(400).json({ message: "Invalid Token" });
+      if (id !== follower!.followedId)
+        return res
+          .status(400)
+          .json({ message: "You are not authorized to unfollow this" });
+      const unfollowedUser = await prisma.follower.delete({
+        where: { folId: req.params.folId },
+      });
+      return res.status(200).send({
+        message: `${unfollowedUser.folId} deleted successfully`,
+      });
     } catch (err: any) {
       res.status(500).json({ message: err.message });
     }
