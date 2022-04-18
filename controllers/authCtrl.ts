@@ -177,7 +177,7 @@ const authCtrl = {
         return res
           .status(400)
           .json({ message: "You are not authorized to update this" });
-      const { userId, userName, email, password, avatar, name, surname } = <IUser>req.body;
+      const { userId, userName, email, password, avatar, name, surname, bio } = <IUser>req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
       const updatedUser: IUser = await prisma.user.update({
         where: { userId: req.params.userId },
@@ -185,6 +185,7 @@ const authCtrl = {
           avatar: avatar,
           userId: userId,
           userName: userName,
+          bio: bio,
           name: name,
           surname: surname,
           email: email,
