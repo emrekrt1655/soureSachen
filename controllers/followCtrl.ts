@@ -34,12 +34,13 @@ const followCtrl = {
       const { id } = decoded;
       if (!id)
         return res.status(400).json({ message: "Please Login to follow" });
-      if (id !== req.body.followerId)
-        return res
-          .status(400)
-          .json({ message: "You are not authorized to unfollow this" });
-
-      const { followerId, followedId } = req.body;
+        
+        const { followerId, followedId } = req.body;
+        
+        if (id !== followerId)
+          return res
+            .status(400)
+            .json({ message: "You are not authorized to follow this" });
       await prisma.follower.create({
         data: {
           folId: `${followerId + new Date().getMilliseconds() * 7}`,
