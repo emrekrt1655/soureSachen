@@ -223,6 +223,47 @@ const authCtrl = {
       res.status(500).json({ message: error.message });
     }
   },
+
+  changePassword: async (req: Request, res: Response) => {
+    try {
+      const { userId, oldPassword, password } = req.body;
+      const { token }: any = req.headers;
+      const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
+      const { id } = decoded;
+      if (!id) return res.status(400).json({ message: "Invalid Token" });
+      // if (user?.userId !== req.params.userId)
+      if (id !== req.params.userId)
+        return res
+          .status(400)
+          .json({ message: "You are not authorized to change password" });
+      const user = await prisma.user.findUnique({ where: { userId: userId } });
+      if (!user)
+        return res
+          .status(400)
+          .json({ message: "This account does not exists" });
+
+      // if the user exists
+
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!isMatch)
+        return res.status(400).json({ message: "Password is incorrect" });
+
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const updatedPassword: IUser = await prisma.user.update({
+        where: { userId: req.params.userId },
+        data: <IUser>{
+          password: hashedPassword,
+        },
+      });
+      res.status(200).json({
+        status: "OK",
+        message: "Password updated successfully",
+        data: <IUser>updatedPassword,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
 };
 
 const loginUser = async (user: IUser, password: string, res: Response) => {
@@ -244,7 +285,8 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
   res.json({
     message: "Login successfully completed!",
     access_token,
-    user: { ...user, password: "" },
+    user,
+    // user: { ...user, password: "" },
   });
 };
 
