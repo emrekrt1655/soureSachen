@@ -12,5 +12,6 @@ router.get("/refresh_token", authCtrl.refreshToken);
 router.get("/logout", authCtrl.logout);
 router.put("/useredit/:userId", authCtrl.updateUser);
 router.delete("/userdelete/:userId", authCtrl.deleteUser);
+router.post("/forgot_password", authCtrl.forgotPassword);
 
 export default router;

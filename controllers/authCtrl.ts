@@ -264,6 +264,24 @@ const authCtrl = {
       return res.status(500).json({ message: error.message });
     }
   },
+  forgotPassword: async (req: Request, res: Response) => {
+    try {
+      const { email } = req.body;
+      const user = await prisma.user.findUnique({ where: { email: email } });
+      if (!user)
+        return res
+          .status(400)
+          .json({ message: "This account does not exist." });
+      const access_token = genAccessToken({ id: user?.userId });
+      const url = `${CLIENT_URL}/reset_password/${access_token}`;
+      if (validateEmail(email)) {
+        sendMail(email, url, "Forgot password?");
+        return res.json({ message: "Success! Please check your email." });
+      }
+    } catch (err: any) {
+      return res.status(500).json({ message: err?.message });
+    }
+  },
 };
 
 const loginUser = async (user: IUser, password: string, res: Response) => {
