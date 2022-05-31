@@ -1,8 +1,8 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { IUser, IDecodedToken } from "../utils/types";
+import { IUser, IDecodedToken, IReqAuth } from "../utils/types";
 import {
   genActiveToken,
   genAccessToken,
@@ -280,6 +280,26 @@ const authCtrl = {
       }
     } catch (err: any) {
       return res.status(500).json({ message: err?.message });
+    }
+  },
+  resetPassword: async (req: IReqAuth, res: Response) => {
+    const { token }: any = req.headers;
+    const decoded = <IDecodedToken>jwt.verify(token, `${tokenEnv?.access}`);
+    const { id } = decoded;
+    if (!id) return res.status(400).json({ message: "Invalid Token" });
+
+    try {
+      const { password } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 12);
+
+      await prisma.user.update({
+        where: { userId: id },
+        data: { password: hashedPassword },
+      });
+
+      res.json({ message: "Password updated successfully" });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
     }
   },
 };

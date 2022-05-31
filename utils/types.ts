@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export interface IUser {
   userId: string;
   userName: string;
@@ -56,4 +58,8 @@ export interface ITopic {
   topicUserId: string;
   image?: string;
   country: string;
+}
+
+export interface IReqAuth extends Request {
+  user?: IUser;
 }

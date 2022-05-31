@@ -13,5 +13,6 @@ router.get("/logout", authCtrl.logout);
 router.put("/useredit/:userId", authCtrl.updateUser);
 router.delete("/userdelete/:userId", authCtrl.deleteUser);
 router.post("/forgot_password", authCtrl.forgotPassword);
+router.put("/reset_password", authCtrl.resetPassword);
 
 export default router;
