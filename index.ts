@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import routes from "./routes/index";
 import bodyParser from "body-parser";
+import {createServer} from "http";
+import {Server, Socket} from "socket.io";
 
 const app = express();
 
@@ -22,6 +24,16 @@ app.use("/api", routes.commentRoutes);
 app.use('/api', routes.likeRoutes);
 app.use('/api', routes.followerRoutes);
 
-app.listen(PORT, () => {
+// Socket.io
+const http = createServer(app)
+export const io = new Server(http)
+import { SocketServer } from './config/socket'
+
+io.on("connection", (socket: Socket) => {
+  SocketServer(socket)
+})
+
+
+http.listen(PORT, () => {
   console.log(`Server at listening on port ${PORT}`);
 });
