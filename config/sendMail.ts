@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const SENDER_EMAIL = `${process.env.SENDER_EMAIL_ADDRESS}`;
+const SENDER_EMAIL = `${process.env.EMAIL}`;
 const PASS = `${process.env.PASS}`;
 
 //send mail
@@ -14,7 +14,7 @@ const sendMail = async (to: string, url: string, txt: string) => {
       },
     });
     const mailOptions = {
-      from: "souresachen@gmail.com",
+      from: SENDER_EMAIL,
       to: to,
       subject: "Soure Sachen Activation Email",
       html: `
